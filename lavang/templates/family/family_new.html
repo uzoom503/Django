@@ -1,0 +1,28 @@
+{% extends "family/base.html" %}
+{% block title %}New Family{% endblock %}
+{% block content %}
+<div class="breadcrumb">
+	<li><a href="/search/">Home</a></li>
+	<li>Family New</li>	
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-4">	
+			<div class="panel panel-default">
+				<form id="frmFamily" method="POST">
+				{% csrf_token %}
+					<div class="panel-body">
+						<table class="table borderless table-condensed"> 
+							{{ FamilyForm.as_table }} 
+						</table> 
+					</div>					
+					<div class="panel-body">
+						<input type="submit" class="btn btn-info" id="btnSaveFamily" value="Create"/>
+						<div id='save_text'></div>								
+					</div>
+				</form>					
+			</div>
+		</div>							
+	</div>							
+</div>
+{% endblock %}

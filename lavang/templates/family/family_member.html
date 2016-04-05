@@ -1,0 +1,116 @@
+{% extends "family/base.html" %}
+{% block title %}Family/Member{% endblock %}
+{% block content %}
+<script>
+
+	var csrftoken = $.cookie('csrftoken');
+	function csrfSafeMethod(method) {
+		// these HTTP methods do not require CSRF protection
+		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
+	function save_family() {
+		
+		$.ajax({
+			url :  $('#frmFamily').attr('action'), // "/family/new/",
+			type : "POST", // http method
+			cache: false,
+			contentType: 'multipart/form-data',
+			processData: false,			
+			dataType: 'json',
+			// serialize using serializeArray won't work for upload file
+			// have to use FormData
+			data :  new FormData($('#frmFamily').get(0)); 
+			// handle a successful response
+			success : function(json) {
+				//alert('save_family');
+				if (json.FamilyID) {
+					$('#save_text').text('Family #' + json.FamilyID)
+				}
+				else
+					$('#save_text').text(json.result)
+			},
+
+			// handle a non-successful response
+			error : function(xhr,errmsg,err) {
+				$('#save_text').text('not ok'); 
+			}
+		});
+	}
+	$(document).ready(function (){			
+		$('#frmFamily').submit(function(event){
+		    //alert("submit");
+			event.preventDefault();
+			save_family();
+		});
+	});
+	
+</script>
+
+<div class="breadcrumb">
+	<li><a href="/search">Home</a></li>
+	<li>Family</li>	
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-4">	
+			<div class="panel panel-default"> <div class="panel-body">
+			<form id="frmFamily" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<table class="table borderless"> 
+					{{ FamilyForm.as_table }} 
+				</table> 
+				<input type="submit" id="btnSaveFamily" class="btn btn-info" value="Save"/>
+				<div id='save_text'></div>
+			</form>
+			</div>
+			</div>
+		</div>		
+		<div class="col-xs-8">	
+			{% if FamilyForm.instance.fam_oPortrait %}
+				<img src="{{ FamilyForm.instance.fam_oPortrait.url }}" height="300" width="400"/>
+			{% endif %}			
+		</div>
+	</div>							
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Members</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12">			
+				<!-- render member form -->
+				<table class="table">	
+				{% for memform in MemberForms %}
+					{% if forloop.first %}
+						<thead><tr>
+						{% for field in memform.visible_fields %}
+						<th>{{ field.label|capfirst }}</th>
+						{% endfor %}
+						</tr></thead>
+					{% endif %}
+					{% for field in memform %}
+						{% if forloop.first %}
+							<td><a href='/member/edit/{{memform.instance.mem_iMemberID}}/'>{{ field.value }}</a></td>			
+						{% else %}
+							<td>{{ field.value }}</td>
+						{% endif %}			
+					{% endfor %}
+					</tr>	
+				{% endfor %}	
+				</table>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+	<a href="/member/new/{{FamilyForm.instance.fam_iFamilyID}}/" class="btn btn-info">Add Member</a>
+</div>
+{% endblock %}

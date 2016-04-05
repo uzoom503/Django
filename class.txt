@@ -1,0 +1,59 @@
+CREATE TABLE Class (
+       cla_iCLassID         int NOT NULL,
+       cla_iOrgID           int NOT NULL,
+       cla_iCourseID        int NULL,
+       cla_iMaxAttendeeCount int NULL,
+       cla_dtYear           datetime NULL,
+       cla_sTerm            nvarchar(32) NULL,
+       cla_sPeriod          nvarchar(32) NULL,
+       cla_sDescription     nvarchar(80) NULL,
+       PRIMARY KEY (cla_iCLassID)
+)
+
+CREATE TABLE Course_Catalog (
+       cca_iCourseID        int IDENTITY,
+       cca_sCourseName      nvarchar(80) NULL,
+       cca_sDescription     nvarchar(80) NULL,
+       PRIMARY KEY (cca_iCourseID)
+)
+go
+
+
+CREATE TABLE Course_Performance (
+       cp_iCoursePerfID     int IDENTITY,
+       cp_sDecription       nvarchar(80) NULL,
+       PRIMARY KEY (cp_iCoursePerfID)
+)
+go
+
+CREATE TABLE Enroll_Status (
+       es_iEnrollStatus     int IDENTITY,
+       es_sDescription      nvarchar(80) NULL,
+       PRIMARY KEY (es_iEnrollStatus)
+)
+go
+
+CREATE TABLE Registered_Class (
+       rc_iClassID          int NOT NULL,
+       rc_iOrgID            int NOT NULL,
+       rc_iMemberID         int NOT NULL,
+       rc_iFamilyID         int NOT NULL,
+       rc_iCoursePerfID     int NOT NULL,
+       rc_sMemo             nvarchar(255) NULL,
+       PRIMARY KEY (rc_iClassID, rc_iOrgID, rc_iMemberID, 
+              rc_iFamilyID)
+)
+go
+
+CREATE TABLE Test_Score (
+       ts_iTestScoreID      int NOT NULL,
+       ts_iClassID          int NOT NULL,
+       ts_iOrgID            int NOT NULL,
+       ts_iMemberID         int NOT NULL,
+       ts_iFamilyID         int NOT NULL,
+       ts_sTestGrade        nchar(2) NULL,
+       ts_sTestName         nvarchar(80) NULL,
+       PRIMARY KEY (ts_iTestScoreID, ts_iClassID, ts_iOrgID, 
+              ts_iMemberID, ts_iFamilyID)
+)
+go

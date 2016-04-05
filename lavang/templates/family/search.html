@@ -1,0 +1,74 @@
+{% extends "family/base.html" %}
+{% block title %}Lavang Search{% endblock %}
+{% block content %}
+	{% if form.errors %} 
+	<p style="color: red;"> Please correct the error{{ form.errors|pluralize }} below. </p> 
+	{% endif %} 
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-4">
+				<h4>Search Member</h4> 
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<form class="form-horizontal" action="/search/" method="post"> 
+							<table class="table borderless table-condensed"> 
+								<!-- render form as table -->
+								{{ form.as_table }} 
+							</table> 
+							{% csrf_token %} 
+							<input type="submit" class="btn btn-info" value="Submit"> 
+							<a href="/family/new/" class="btn btn-info">New Family</a>
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-8">
+				<table class="table table-bordered table-condensed"> 
+				<tr>
+				<th>Family ID</th>
+				<th>Name</th>
+				<th>Address</th>
+				<th>Home Phone</th>				
+				<th>Mobile Phone</th>								
+				<th>Email</th>												
+				</tr>
+				{% for member in members %}
+					<tr>
+					<td>
+					<!--
+					<a href="{% url 'admin:family_family_change' member.mem_iFamilyID
+					-->
+					<a href="/family/edit/{{member.mem_iFamilyID}}/">Fam#{{member.mem_iFamilyID}}</a>
+					</td>
+					<td>
+					<a href="/member/edit/{{member.mem_iMemberID }}/">{{member.get_full_name}}</a>
+					</td>
+					<td>
+					{{member.mem_iFamilyID.get_address}}
+					</td>
+					<td>
+					{{member.mem_iFamilyID.Phone}}
+					</td>
+					<td>
+					{{member.mem_sMobile}}
+					</td>
+					<td>
+					{{member.mem_sEmailAddress}}
+					</td>
+					</tr>
+				{% empty %}
+				<tr>
+				<td>
+					...Empty list...
+				</td>
+				</tr>
+				{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

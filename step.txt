@@ -1,0 +1,38 @@
+python d:\python\scripts\django-admin.py startproject dj_lavang
+python d:\python\scripts\django-admin.py startapp family
+
+# activate application
+add 'family' app to 'setting.py'
+
+// add model to 'models.py'
+add model 'Church', 'Family' and 'Member'
+
+// install Pillow to deal with image
+d:\python\scripts\pip install Pillow
+
+//This will scan your models to make sure that the syntax you’ve 
+// used in entering them  is correct. 
+//If there is anything you missed, 
+// it will let you know something is wrong before 
+// you commit these models to your database.
+python manage.py validate
+
+// create initial migrations for your project
+python manage.py makemigrations
+// Run the next command to sync the database
+python manage.py migrate
+
+python manage.py syncdb
+
+// add our models to admin.py to manage
+
+// Create supperuser
+python manage.py createsuperuser
+
+python manage.py runserver
+
+//Building search views
+
+// build URL pattern for your view, in urls.py
+
+// 

@@ -1,0 +1,10 @@
+* {
+	font-family: "Roboto";
+	font-size: 14px;
+	line-height: 1;
+}
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
